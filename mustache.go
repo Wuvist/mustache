@@ -445,7 +445,11 @@ func renderSection(section *sectionElement, contextChain []interface{}, buf io.W
 					fmt.Printf("Panic parsing section %s\n", section.name)
 				}
 
-				section.elems = []interface{}{tpl}
+				// Lambda value is rendered immediately, no change to the section itself.
+				for _, elem := range tpl.elems {
+					renderElement(elem, contextChain, buf)
+				}
+				return
 			}
 
 			contexts = append(contexts, context)
